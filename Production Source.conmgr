@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:DelayValidation="True"
+  DTS:ObjectName="Production Source"
+  DTS:DTSID="{BAC37832-0FA4-43A8-8B7D-3B2CDA48BFC3}"
+  DTS:CreationName="OLEDB">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="Data Source=FATI3;Initial Catalog=SAPStaging;Provider=SQLOLEDB.1;Integrated Security=SSPI;Application Name=SSIS-{BAC37832-0FA4-43A8-8B7D-3B2CDA48BFC3}Production Source;" />
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

@@ -1,0 +1,6 @@
+<ConnectionManager p1:ObjectName="MDS" p1:DTSID="{B8901B51-D8BF-4184-96FC-111027080EBC}" p1:refId="Package.ConnectionManagers[MDS]" p1:CreationName="OLEDB" xmlns:p1="www.microsoft.com/SqlServer/Dts" xmlns="www.microsoft.com/SqlServer/Dts">
+  <p1:ObjectData>
+    <DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts" DTS:ConnectionString="Provider=SQLOLEDB;Data Source=MDS1;Integrated Security=SSPI;Initial Catalog=&quot;MDS&quot;">
+    </DTS:ConnectionManager>
+  </p1:ObjectData>
+</ConnectionManager>

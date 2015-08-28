@@ -1,0 +1,1349 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/9/2015 7:37:23 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="CBIG-PGUTH"
+  DTS:CreatorName="CBIG-PGUTH\pguth"
+  DTS:DTSID="{E3985AE4-CE1E-433A-9AA5-25828DEDAFDF}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="12.0.4100.1"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Load SAP Product to MDS Product"
+  DTS:PackageType="5"
+  DTS:VersionBuild="217"
+  DTS:VersionGUID="{98151C0A-365A-4284-A08C-968C810BB769}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[FATI3.SAPStaging]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{2383334B-0A4A-4C9B-9264-AF8032C1D8B7}"
+      DTS:ObjectName="FATI3.SAPStaging">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Retain="True"
+          DTS:ConnectionString="Data Source=FATI3;Initial Catalog=SAPStaging;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[MDS]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{CACD4308-17A4-4BCB-838A-42D481A8BD88}"
+      DTS:ObjectName="MDS">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=mds1;Initial Catalog=MDS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[mds1.Cornerstone Staging]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{40F24085-D787-49B4-AA24-BA6E40476A13}"
+      DTS:ObjectName="mds1.Cornerstone Staging">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=mds1;Initial Catalog=Cornerstone Staging;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[SSISDB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{45EC38B8-B391-4930-A4EC-96909CEF53DF}"
+      DTS:ObjectName="SSISDB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=mds1;Initial Catalog=SSISDB;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{ED365A94-E8EC-4815-A211-82452E137013}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="(DT_WSTR,50)@[System::PackageName] + &quot; - &quot; + (DT_WSTR,50)@[System::StartTime]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="BatchTag">
+      <DTS:VariableValue
+        DTS:DataType="8">Load SAP Product to MDS Product - 8/28/2015 2:06:55 PM</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0ABD2FC8-1640-4108-A90E-681C576DE012}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="CDCTableName">
+      <DTS:VariableValue
+        DTS:DataType="8">CUSTOMER_MASTER</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{853078EB-50F7-4E12-9CBC-CEFC9F65865F}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="CDC_State">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B5891069-0D29-4620-8872-405851F087D0}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ending_lsn">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{09112158-9D47-43A1-9655-1A8F9639D321}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[System::PackageName] + &quot;.dtsx&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="PackageName">
+      <DTS:VariableValue
+        DTS:DataType="8">Load SAP Product to MDS Product.dtsx</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5152FA89-D4EF-4BFA-8233-0E0BBB589680}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Previous_Execution_End_Time">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C00AC7FA-19EA-40CA-B129-FEA878EE3214}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT mm.[MATNR] AS [Product Code]&#xA;, CAST (COALESCE(mt.TEXT, md.MAKTX) as nvarchar(50) ) AS [Product Name]&#xA;, LEFT(mm.MATNR, 5) AS [Product Base Code]&#xA;, md.[MAKTX] AS [Product Base Name]&#xA;, mm.[MSTAV] AS [Product Status]&#xA;, lp.[KBETR] AS [Product Current List Price]&#xA;, mm.[MHDHB] AS [Product Total Shelf Life]&#xA;, um.[MEINH] AS [Product Packaging UOM]&#xA;, mp.[WZEIT] AS [Product Lead Time]&#xA;&#xA;&#xA;&#xA;from [SAPStaging].[dbo].[tmp_material_master_CT] mm&#xA;join [SAPStaging].[dbo].[MATERIAL_DESCS] md on md.[MATNR] = mm.MATNR&#xA;left join [SAPStaging].[dbo].[MATERIAL_PLANTS] mp on mp.[MATNR] = mm.MATNR&#xA;left join [SAPStaging].[dbo].[MATERIAL_TEXTS] mt on mt.[MATNR] = mm.MATNR and mt.VKORG = '9999' and mt.VTWEG = '99'&#xA;--left join [SAPStaging].[dbo].[MATERIAL_TEXTS] mt2 on mt2.[MATNR] = left(mm.MATNR, 5) and mt2.VKORG = '9999' and mt2.VTWEG = '99'&#xA;left join  [SAPStaging].[dbo].[MATERIAL_ALT_UOM]  um on um.MATNR = mm.MATNR and um.MEINH = mm.MEINS&#xA;left join (&#x9;select MATNR, KBETR, DATAB, DATBI  &#xA;&#x9;&#x9;&#x9;from [SAPStaging].[dbo].[MATERIAL_LIST_PRICE]&#xA;&#x9;&#x9;&#x9;where VKORG  = 1000 -- SalesOrganization&#xA;&#x9;&#x9;&#x9;and VTWEG = 10 -- DistributionChannel&#xA;&#x9;&#x9;&#x9;and isnull(LOEVM_KO,'') &lt;&gt; 'X' -- product hasn't been deleted&#xA;&#x9;&#x9;&#x9;and convert(date, getdate(),126) between DATAB and DATBI) lp on lp.[MATNR] = mm.[MATNR]&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SQL">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT mm.[MATNR] AS [Product Code]
+, CAST (COALESCE(mt.TEXT, md.MAKTX) as nvarchar(50) ) AS [Product Name]
+, LEFT(mm.MATNR, 5) AS [Product Base Code]
+, md.[MAKTX] AS [Product Base Name]
+, mm.[MSTAV] AS [Product Status]
+, lp.[KBETR] AS [Product Current List Price]
+, mm.[MHDHB] AS [Product Total Shelf Life]
+, um.[MEINH] AS [Product Packaging UOM]
+, mp.[WZEIT] AS [Product Lead Time]
+
+
+
+from [SAPStaging].[dbo].[tmp_material_master_CT] mm
+join [SAPStaging].[dbo].[MATERIAL_DESCS] md on md.[MATNR] = mm.MATNR
+left join [SAPStaging].[dbo].[MATERIAL_PLANTS] mp on mp.[MATNR] = mm.MATNR
+left join [SAPStaging].[dbo].[MATERIAL_TEXTS] mt on mt.[MATNR] = mm.MATNR and mt.VKORG = '9999' and mt.VTWEG = '99'
+--left join [SAPStaging].[dbo].[MATERIAL_TEXTS] mt2 on mt2.[MATNR] = left(mm.MATNR, 5) and mt2.VKORG = '9999' and mt2.VTWEG = '99'
+left join  [SAPStaging].[dbo].[MATERIAL_ALT_UOM]  um on um.MATNR = mm.MATNR and um.MEINH = mm.MEINS
+left join (	select MATNR, KBETR, DATAB, DATBI  
+			from [SAPStaging].[dbo].[MATERIAL_LIST_PRICE]
+			where VKORG  = 1000 -- SalesOrganization
+			and VTWEG = 10 -- DistributionChannel
+			and isnull(LOEVM_KO,'') &lt;&gt; 'X' -- product hasn't been deleted
+			and convert(date, getdate(),126) between DATAB and DATBI) lp on lp.[MATNR] = mm.[MATNR]</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{499E23AD-5ABF-49C3-8A74-AD40B9AF1D75}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SQL_CTE">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{5B6C0944-2A30-47BA-AC9E-E61AFD3F7330}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="starting_lsn">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{C2624303-6F14-4AEE-88A0-A13CA4A2C508}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="UserName">
+      <DTS:VariableValue
+        DTS:DataType="8">NEB\Guth</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQ - Load MDS NEB Model"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{3F7C8B8B-348E-4ED5-BE5E-26BBF58BAABE}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQ - Load MDS NEB Model">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Load MDS NEB Model\TSQL - Populate MDS Model from Staging - Target Entity"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{DE62BC1F-4568-4939-B7B4-5C1BA2FBD932}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Populate MDS Model from Staging - Target Entity"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{CACD4308-17A4-4BCB-838A-42D481A8BD88}"
+              SQLTask:SqlStatementSource="DECLARE @RC int &#xA;DECLARE @VersionName nvarchar(50) &#xA;DECLARE @LogFlag int &#xA;DECLARE @BatchTag nvarchar(50)&#xA;&#xA;SET @VersionName = N'VERSION_1' &#xA;SET @LogFlag = 1 &#xA;SET @BatchTag = ? &#xA;&#xA;EXECUTE @RC = [stg].[udp_product_sku_Leaf] &#xA;   @VersionName &#xA;  ,@LogFlag &#xA;  ,@BatchTag &#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::BatchTag"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQ - Load MDS Staging Tables"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{05247931-6328-45D9-85E4-8D4C8F02D7DC}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQ - Load MDS Staging Tables">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{B10A86F2-B374-42AD-8442-609F3D53AE84}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFLT - Populate MDS Staging - Product Entity"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="DC - Create Batch Tag"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportType]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportType]"
+                          name="ImportType"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">0</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">0</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[BatchTag]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="IgnoreFailure"
+                          length="50"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[BatchTag]"
+                          name="BatchTag"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">(DT_WSTR,50)@[User::BatchTag]</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">(DT_WSTR,50)@[User::BatchTag]</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportStatus_ID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportStatus_ID]"
+                          name="ImportStatus_ID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">0</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">0</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[stg].[Product_SKU_Leaf]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[MDS]"
+                      connectionManagerRefId="Package.ConnectionManagers[MDS]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Product Base Code]"
+                          cachedDataType="wstr"
+                          cachedLength="5"
+                          cachedName="Product Base Code"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Base Code]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Base Code]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Product Current List Price]"
+                          cachedDataType="numeric"
+                          cachedName="Product Current List Price"
+                          cachedPrecision="11"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Current List Price]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Current List Price]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Product Code]"
+                          cachedDataType="wstr"
+                          cachedLength="18"
+                          cachedName="Product Code"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Code]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Code]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Product Name]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Product Name"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Name]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Name]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ImportType]"
+                          cachedDataType="i4"
+                          cachedName="ImportType"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportType]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportType]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[BatchTag]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="BatchTag"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BatchTag]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[BatchTag]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ImportStatus_ID]"
+                          cachedDataType="i4"
+                          cachedName="ImportStatus_ID"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportStatus_ID]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportStatus_ID]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Product Status]"
+                          cachedDataType="wstr"
+                          cachedLength="2"
+                          cachedName="Product Status"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Status]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Status]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Product Packaging UOM]"
+                          cachedDataType="wstr"
+                          cachedLength="3"
+                          cachedName="Product Packaging UOM"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Packaging UOM]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Packaging UOM]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Name]"
+                          dataType="wstr"
+                          length="250"
+                          name="Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Code]"
+                          dataType="wstr"
+                          length="250"
+                          name="Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Base Code]"
+                          dataType="wstr"
+                          length="250"
+                          name="Base Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Current List Price]"
+                          dataType="numeric"
+                          name="Current List Price"
+                          precision="38"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportType]"
+                          dataType="ui1"
+                          name="ImportType" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportStatus_ID]"
+                          dataType="ui1"
+                          name="ImportStatus_ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Batch_ID]"
+                          dataType="i4"
+                          name="Batch_ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BatchTag]"
+                          dataType="wstr"
+                          length="50"
+                          name="BatchTag" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ErrorCode]"
+                          dataType="i4"
+                          name="ErrorCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[NewCode]"
+                          dataType="wstr"
+                          length="250"
+                          name="NewCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Family]"
+                          dataType="wstr"
+                          length="100"
+                          name="Family" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Web Saleable]"
+                          dataType="wstr"
+                          length="100"
+                          name="Web Saleable" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Status]"
+                          dataType="wstr"
+                          length="250"
+                          name="Status" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Packaging UOM]"
+                          dataType="wstr"
+                          length="250"
+                          name="Packaging UOM" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE DB Source"
+                  usesDispositions="true"
+                  validateExternalMetadata="False"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[mdm].[vw_customer]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT ID, [Invoice Line Number], [Invoice Header Invoice Number], [Invoice Header Date], [Bill To Ship To Code], [Invoice Header Customer Purchase Order Number], 
+                  [Invoice Item Purchase Order Date], [Order Header Purchase Order Type], [Invoice Header Billing Type], [Invoice Header Billing Category], 
+                  [Invoice Header Local Currency Code], [Invoice Header Net Value in Local Currency], [Invoice Header Freight Cost], [Invoice Item Delivery Number], 
+                  [Delivery Header Delivery Date], [Invoice Item Product Code], [Invoice Item Description], [Invoice Item Product Type], [Invoice Item Category], 
+                  [Invoice Item Actual Invoiced Quantity], [Invoice Item Discount], [Invoice Item Profit Center], [Invoice Item Order Number], [Order Item Number], 
+                  [Invoice Item Net Value in Local Currency], [Invoice Item Tax Amount in Local Currency], [Invoice Item Reference ID], [Invoice Item XML Sender ID], [Invoice Item XML From ID], 
+                  [Invoice Item External Ship To], [Invoice Item External Bill To], [Order Header Distribution Channel], [Order Header Division], [Order Header Sales Organization], 
+                  [Invoice Header Cancelled Invoice Flag], [Invoice Header Cancelled Invoice Date], [Invoice Header Associated Invoice Number], [Database Source]
+FROM     stage.Invoice</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::SQL</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[FATI3.SAPStaging]"
+                      connectionManagerRefId="Package.ConnectionManagers[FATI3.SAPStaging]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Code]"
+                          length="18"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Code]"
+                          name="Product Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Name]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Name]"
+                          length="50"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Name]"
+                          name="Product Name"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Base Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Base Code]"
+                          length="5"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Base Code]"
+                          name="Product Base Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Base Name]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Base Name]"
+                          length="40"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Base Name]"
+                          name="Product Base Name"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Status]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Status]"
+                          length="2"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Status]"
+                          name="Product Status"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Current List Price]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Current List Price]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Current List Price]"
+                          name="Product Current List Price"
+                          precision="11"
+                          scale="2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Total Shelf Life]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Total Shelf Life]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Total Shelf Life]"
+                          name="Product Total Shelf Life"
+                          precision="5"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Packaging UOM]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Packaging UOM]"
+                          length="3"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Packaging UOM]"
+                          name="Product Packaging UOM"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Lead Time]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Lead Time]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Product Lead Time]"
+                          name="Product Lead Time"
+                          precision="3"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Code]"
+                          dataType="wstr"
+                          length="18"
+                          name="Product Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Name]"
+                          dataType="wstr"
+                          length="50"
+                          name="Product Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Base Code]"
+                          dataType="wstr"
+                          length="5"
+                          name="Product Base Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Base Name]"
+                          dataType="wstr"
+                          length="40"
+                          name="Product Base Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Status]"
+                          dataType="wstr"
+                          length="2"
+                          name="Product Status" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Current List Price]"
+                          dataType="numeric"
+                          name="Product Current List Price"
+                          precision="11"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Total Shelf Life]"
+                          dataType="numeric"
+                          name="Product Total Shelf Life"
+                          precision="5" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Packaging UOM]"
+                          dataType="wstr"
+                          length="3"
+                          name="Product Packaging UOM" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Product Lead Time]"
+                          dataType="numeric"
+                          name="Product Lead Time"
+                          precision="3" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Code]"
+                          dataType="wstr"
+                          length="18"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Code]"
+                          name="Product Code" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Name]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Name]"
+                          name="Product Name" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Base Code]"
+                          dataType="wstr"
+                          length="5"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Base Code]"
+                          name="Product Base Code" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Base Name]"
+                          dataType="wstr"
+                          length="40"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Base Name]"
+                          name="Product Base Name" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Status]"
+                          dataType="wstr"
+                          length="2"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Status]"
+                          name="Product Status" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Current List Price]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Current List Price]"
+                          name="Product Current List Price"
+                          precision="11"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Total Shelf Life]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Total Shelf Life]"
+                          name="Product Total Shelf Life"
+                          precision="5" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Packaging UOM]"
+                          dataType="wstr"
+                          length="3"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Packaging UOM]"
+                          name="Product Packaging UOM" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Lead Time]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Product Lead Time]"
+                          name="Product Lead Time"
+                          precision="3" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity.Paths[Derived Column Output]"
+                  endId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity.Paths[OLE DB Source Output]"
+                  endId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag.Inputs[Derived Column Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Load MDS Staging Tables\TSQL - Delete From Staging - Target Entity"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{C6CC8983-66BD-4CFA-BE21-3DBD8D32DFC7}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Delete From Staging - Target Entity"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{CACD4308-17A4-4BCB-838A-42D481A8BD88}"
+              SQLTask:SqlStatementSource="delete from&#xA;stg.Product_Leaf&#xA;where errorCode = 0" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQ - Load MDS Staging Tables.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{DA53B33F-81A1-4801-AE4E-9659392D3434}"
+          DTS:From="Package\SEQ - Load MDS Staging Tables\TSQL - Delete From Staging - Target Entity"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{4C793BD5-39F2-4AD1-AB99-30DE9C89F0C7}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQ - Select and Prepare CDC Data Set for Loading to MDS">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Establish LSN Range and Populate Temp Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{2fe5032c-6c96-4243-8b83-9e152d6840c6}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Establish LSN Range and Populate Temp Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{2383334B-0A4A-4C9B-9264-AF8032C1D8B7}"
+              SQLTask:SqlStatementSource="&#xA;DECLARE &#xA;&#x9;@begin_time&#x9;&#x9;datetime, &#xA;&#x9;@end_time&#x9;&#x9;datetime, &#xA;&#x9;@from_lsn&#x9;&#x9;binary(10), &#xA;&#x9;@to_lsn&#x9;&#x9;&#x9;binary(10);&#xA;&#xA;-- Obtain the beginning of the time interval, which is the last time the package executed.&#xA;-- This will be passed from the previous execute sql task (package execution information comes from SSISDB)&#xA;SET @begin_time = ?;&#xA;--SET @begin_time ='2015-08-26 13:21:36.230';&#xA;&#xA;-- Obtain the end of the time interval.&#xA;SET @end_time = GETDATE();&#xA;&#xA;-- Map the time interval to a change data capture query range.&#xA;SET @from_lsn = sys.fn_cdc_map_time_to_lsn('smallest greater than or equal', @begin_time);&#xA;SET @to_lsn = sys.fn_cdc_map_time_to_lsn('largest less than or equal', @end_time);&#xA;&#xA;--Return values for assignment to SSIS package variables&#xA;--select @from_lsn,@to_lsn&#xA;IF object_id('tmp_Material_Master_CT') is not null&#xA;   DROP table tmp_Material_Master_CT;&#xA; &#xA; select *  into  tmp_Material_Master_CT from  [cdc].[fn_cdc_get_net_changes_dbo_MATERIAL_MASTER]( @from_lsn , @to_lsn , 'all with merge' )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Previous_Execution_End_Time"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Get Previous Package Execution End Time"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{29FD0378-107F-4A4E-9C58-EEC630B4052F}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Get Previous Package Execution End Time"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{45EC38B8-B391-4930-A4EC-96909CEF53DF}"
+              SQLTask:SqlStatementSource="SELECT CAST(ISNULL(MAX(end_time), '2015-08-01 13:21:36.230') as datetime)&#xA;  FROM [SSISDB].[catalog].[executions]&#xA;  where package_name = ?"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::Previous_Execution_End_Time" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::PackageName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{14EFA638-7494-41D2-9BCC-CB0CA4F4DB37}"
+          DTS:From="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Get Previous Package Execution End Time"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Establish LSN Range and Populate Temp Table" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQ - Validate MDS NEB Model"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{123F96AC-8F00-41C7-A4B9-6B4A999774A8}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQ - Validate MDS NEB Model">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Validate MDS NEB Model\TSQL - Validate MDS NEB Model"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{90E502FD-ABE2-41F1-A259-C310E1BEEE4E}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Validate MDS NEB Model"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{CACD4308-17A4-4BCB-838A-42D481A8BD88}"
+              SQLTask:SqlStatementSource="DECLARE @ModelName nVarchar(50) = 'NEB' &#xA;DECLARE @Model_id int &#xA;DECLARE @UserName nvarchar(50)=? &#xA;DECLARE @User_ID int &#xA;DECLARE @Version_ID int&#xA;&#xA;SET @User_ID =  (SELECT ID  &#xA;                 FROM  mdm.tblUser u &#xA;                 WHERE u.UserName = @UserName)&#xA;&#xA;SET @Model_ID = (SELECT Model_ID &#xA;                 FROM mdm.viw_SYSTEM_SCHEMA_VERSION &#xA;                 WHERE Model_Name = @ModelName)&#xA;&#xA;SET @Version_ID = (SELECT MAX(ID) &#xA;                   FROM mdm.viw_SYSTEM_SCHEMA_VERSION &#xA;                   WHERE Model_ID = @Model_ID)&#xA;&#xA;EXECUTE mdm.udpValidateModel @User_ID, @Model_ID, @Version_ID, 1&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::UserName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{886727ED-B3D3-47C2-B974-A9CA5F076F79}"
+      DTS:From="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\SEQ - Load MDS Staging Tables" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{7390574E-B963-4805-B107-DFB62DDB827A}"
+      DTS:From="Package\SEQ - Load MDS Staging Tables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\SEQ - Load MDS NEB Model" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{06B3CEB8-C6E8-4A12-B259-9677AEE97328}"
+      DTS:From="Package\SEQ - Load MDS NEB Model"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\SEQ - Validate MDS NEB Model" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql12">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="348.8,41.6"
+          Id="Package\SEQ - Load MDS NEB Model\TSQL - Populate MDS Model from Staging - Target Entity"
+          TopLeft="5.5,5.50000000000007" />
+        <ContainerLayout
+          HeaderHeight="43.2"
+          IsExpanded="False"
+          PanelSize="360,102.4"
+          Size="360,43.2"
+          Id="Package\SEQ - Load MDS NEB Model"
+          TopLeft="17.5,211.9" />
+        <NodeLayout
+          Size="296,41.6"
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity"
+          TopLeft="5.50000000000003,113.5" />
+        <NodeLayout
+          Size="208,48"
+          Id="Package\SEQ - Load MDS Staging Tables\TSQL - Delete From Staging - Target Entity"
+          TopLeft="48.7,5.5" />
+        <EdgeLayout
+          Id="Package\SEQ - Load MDS Staging Tables.PrecedenceConstraints[Constraint]"
+          TopLeft="153.1,53.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.2"
+          IsExpanded="False"
+          PanelSize="316,210.4"
+          Size="316,43.2"
+          Id="Package\SEQ - Load MDS Staging Tables"
+          TopLeft="39.5,108.7" />
+        <NodeLayout
+          Size="336,41.6"
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Establish LSN Range and Populate Temp Table"
+          TopLeft="16.7,107.1" />
+        <NodeLayout
+          Size="313.6,41.6"
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Get Previous Package Execution End Time"
+          TopLeft="16.7,5.50000000000007" />
+        <EdgeLayout
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS.PrecedenceConstraints[Constraint]"
+          TopLeft="173.5,47.1000000000001">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="11.2,60"
+              Start="0,0"
+              End="11.2,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="4,30" />
+                  <mssgle:LineSegment
+                    End="7.19999999999999,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="7.19999999999999,30"
+                    Point2="11.2,30"
+                    Point3="11.2,34" />
+                  <mssgle:LineSegment
+                    End="11.2,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.2"
+          IsExpanded="False"
+          PanelSize="384,204"
+          Size="384,43.2"
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS"
+          TopLeft="5.5,5.50000000000002" />
+        <NodeLayout
+          Size="232,41.6"
+          Id="Package\SEQ - Validate MDS NEB Model\TSQL - Validate MDS NEB Model"
+          TopLeft="5.5,5.50000000000007" />
+        <ContainerLayout
+          HeaderHeight="43.2"
+          IsExpanded="False"
+          PanelSize="250.4,102.4"
+          Size="250.4,43.2"
+          Id="Package\SEQ - Validate MDS NEB Model"
+          TopLeft="72.3000000000001,315.1" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="197.5,48.7">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.0000000000001"
+              Start="0,0"
+              End="0,52.5000000000001">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5000000000001" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="197.5,151.9">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="197.5,255.1">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="152,41.6"
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source"
+          TopLeft="21.72857141884,5.49999999999995" />
+        <NodeLayout
+          Size="172.8,41.6"
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination"
+          TopLeft="11.9,208.7" />
+        <NodeLayout
+          Size="185.6,41.6"
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\DC - Create Batch Tag"
+          TopLeft="5.50000000000003,107.1" />
+        <EdgeLayout
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity.Paths[OLE DB Source Output]"
+          TopLeft="98.01428570942,47.1">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity.Paths[Derived Column Output]"
+          TopLeft="98.3,148.7">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59.9999999999999"
+              Start="0,0"
+              End="0,52.4999999999999">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.4999999999999" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

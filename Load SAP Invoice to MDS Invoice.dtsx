@@ -1,0 +1,2325 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/9/2015 7:37:23 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="CBIG-PGUTH"
+  DTS:CreatorName="CBIG-PGUTH\pguth"
+  DTS:DTSID="{975A0480-E224-452C-9415-CFEF0ADECA62}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="12.0.4100.1"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Load SAP Invoice to MDS Invoice"
+  DTS:PackageType="5"
+  DTS:VersionBuild="184"
+  DTS:VersionGUID="{97382B88-4CEC-4E70-BC9B-06BFAA3A9E24}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[FATI3.SAPStaging]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{AC1C0F06-7A8D-471D-AB6C-263A6B31E7E3}"
+      DTS:ObjectName="FATI3.SAPStaging">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Retain="True"
+          DTS:ConnectionString="Data Source=FATI3;Initial Catalog=SAPStaging;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[MDS]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{3CE7B11D-CCE3-4B3B-84D8-2233EC30E909}"
+      DTS:ObjectName="MDS">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=mds1;Initial Catalog=MDS;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[mds1.Cornerstone Staging]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{878B4127-8161-44EC-B3F7-945394208FD9}"
+      DTS:ObjectName="mds1.Cornerstone Staging">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=mds1;Initial Catalog=Cornerstone Staging;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[SSISDB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{4C1E197D-29A5-4401-9D8D-03AFF4B50D35}"
+      DTS:ObjectName="SSISDB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=mds1;Initial Catalog=SSISDB;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DDA93877-0B75-439E-BAAB-2E98C015A716}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="(DT_WSTR,50)@[System::PackageName] + &quot; - &quot; + (DT_WSTR,50)@[System::StartTime]"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="BatchTag">
+      <DTS:VariableValue
+        DTS:DataType="8">Load SAP Invoice to MDS Invoice - 8/26/2015 9:00:44 PM</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{8FA03A4B-5902-426B-8370-717BA62E8A3A}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="CDC_State">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7B9F6EBA-5776-4A12-AD73-19D9C7DDD49E}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="ending_lsn">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0A4B4C3D-A158-43B4-B202-649CE2165DD9}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="@[System::PackageName] + &quot;.dtsx&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="PackageName">
+      <DTS:VariableValue
+        DTS:DataType="8">Load SAP Invoice to MDS Invoice.dtsx</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{19E03E69-F48F-4F51-85EE-670FBBE7D066}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="Previous_Execution_End_Time">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{047B9CED-54E4-4C89-A93A-333316C24805}"
+      DTS:EvaluateAsExpression="True"
+      DTS:Expression="&quot;SELECT ii.VBELN + '_' + CAST(ii.POSNR AS nvarchar(10)) AS [Invoice Line Number]&#xA;, ih.[VBELN] AS [Invoice Header Invoice Number]&#xA;, ih.[FKDAT] AS [Invoice Header Date]&#xA;, ih.[KUNAG] + '_' + dp.[KUNNR] AS [Bill To Ship To Code]&#xA;, ih.[BSTNK_VF] AS [Invoice Header Customer Purchase Order Number]&#xA;, CAST(dt_po_date.DATA AS NVARCHAR(25)) AS [Invoice Item Purchase Order Date]&#xA;, oh.[BSARK] AS [Order Header Purchase Order Type]&#xA;, ih.[FKART] AS [Invoice Header Billing Type]&#xA;, ih.[FKTYP] AS [Invoice Header Billing Category]&#xA;, ih.[WAERK] AS [Invoice Header Local Currency Code]&#xA;, CASE WHEN  ih.VBTYP in ('O', 'N') THEN  -1 * (ih.[NETWR] - ISNULL(freight.[NETWR],0)) else ISNULL(ih.[NETWR],0) - ISNULL(freight.[NETWR],0) END AS [Invoice Header Net Value in Local Currency]&#xA;, CASE WHEN ih.VBTYP in ('O', 'N') THEN -1 *ISNULL(freight.[NETWR],0) ELSE ISNULL(freight.[NETWR],0) END AS [Invoice Header Freight Cost]&#xA;, ii.[VGBEL] AS [Invoice Item Delivery Number]&#xA;, dh.[LFDAT] AS [Delivery Header Delivery Date]&#xA;, ii.[MATNR] AS [Invoice Item Product Code]&#xA;, ii.[ARKTX] AS [Invoice Item Description]&#xA;, ii.[MATKL] AS [Invoice Item Product Type]&#xA;, ii.[PSTYV] AS [Invoice Item Category]&#xA;, ISNULL(ii.FKIMG,0) AS [Invoice Item Actual Invoiced Quantity]&#xA;, ISNULL(ii.KZWI2, 0) AS [Invoice Item Discount]&#xA;, ii.[PRCTR] AS [Invoice Item Profit Center]&#xA;, ii.[AUBEL] AS [Invoice Item Order Number]&#xA;, ii.[AUPOS] AS [Order Item Number]&#xA;, CASE WHEN  ih.VBTYP in ('O', 'N') THEN -1 * ISNULL(ii.NETWR,0) ELSE ISNULL(ii.NETWR,0) END AS [Invoice Item Net Value in Local Currency]&#xA;, ISNULL(ii.MWSBP,0) AS [Invoice Item Tax Amount in Local Currency]&#xA;, CAST(dt_reference_ID.DATA AS NVARCHAR(100)) AS [Invoice Item Reference ID]&#xA;, CAST(dt_sender_ID.DATA AS NVARCHAR(20)) AS [Invoice Item XML Sender ID]&#xA;, CAST(dt_cXML_from_ID.DATA AS NVARCHAR(20)) AS [Invoice Item XML From ID]&#xA;, CAST(dt_ext_ship_to.DATA AS NVARCHAR(20)) AS [Invoice Item External Ship To]&#xA;, CAST(dt_ext_bill_to.DATA AS NVARCHAR(20)) AS [Invoice Item External Bill To]&#xA;, oh.[VTWEG] AS [Order Header Distribution Channel]&#xA;, oh.[SPART] AS [Order Header Division]&#xA;, oh.[VKORG] AS [Order Header Sales Organization]&#xA;, CASE WHEN FKSTO = 'X' Then 1 ELSE 0 END AS [Invoice Header Cancelled Invoice Flag]&#xA;, ih.[AEDAT] AS [Invoice Header Cancelled Invoice Date]&#xA;, ih.[SFAKN] AS [Invoice Header Associated Invoice Number]&#xA;, N'SAPStaging' AS [Database Source] &#xA;&#xA;FROM tmp_Invoice_Header_CT ih &#xA;--FROM [SAPStaging].dbo.INVOICE_HEADER ih&#xA;       INNER JOIN [SAPStaging].dbo.INVOICE_ITEMS ii ON (ih.vbeln = ii.vbeln and ii.PRCTR is not null )--and ii.netwr &lt;&gt; 0 )&#xA;&#x9;   INNER JOIN [SAPStaging].dbo.DOCUMENT_PARTNERS dp ON (ih.vbeln = dp.vbeln and dp.parvw = 'WE') --Ship To Code&#xA;       LEFT JOIN [SAPStaging].dbo.ORDER_HEADER oh ON (ii.aubel = oh.vbeln)&#xA;&#x9;   LEFT JOIN [SAPStaging].dbo.DELIVERY_HEADER dh ON (ii.VGBEL = dh.vbeln)&#xA;&#x9;   LEFT JOIN [SAPStaging].dbo.INVOICE_ITEMS freight ON (freight.vbeln = ii.vbeln and freight.vgbel = dh.vbeln and freight.matnr = 'FREIGHT' and freight.aubel is not null) &#xA;       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_reference_id ON (ii.aubel = dt_reference_id.VBELN and dt_reference_id.[TDID] = 'S015')&#xA;       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_sender_ID ON (ii.aubel = dt_sender_ID.VBELN and dt_sender_ID.[TDID] = 'S017')&#xA;       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_cXML_from_ID ON (ii.aubel = dt_cXML_from_ID.VBELN and dt_cXML_from_ID.[TDID] = 'S016')&#xA;       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_ext_ship_to ON (ii.aubel = dt_ext_ship_to.VBELN and dt_ext_ship_to.[TDID] = 'S018')&#xA;       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_ext_bill_to ON (ii.aubel = dt_ext_bill_to.VBELN and dt_ext_bill_to.[TDID] = 'S023')&#xA;       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_po_date ON (ii.aubel = dt_po_date.VBELN and dt_po_date.[TDID] = 'S026')&quot;"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SQL">
+      <DTS:VariableValue
+        DTS:DataType="8">SELECT ii.VBELN + '_' + CAST(ii.POSNR AS nvarchar(10)) AS [Invoice Line Number]
+, ih.[VBELN] AS [Invoice Header Invoice Number]
+, ih.[FKDAT] AS [Invoice Header Date]
+, ih.[KUNAG] + '_' + dp.[KUNNR] AS [Bill To Ship To Code]
+, ih.[BSTNK_VF] AS [Invoice Header Customer Purchase Order Number]
+, CAST(dt_po_date.DATA AS NVARCHAR(25)) AS [Invoice Item Purchase Order Date]
+, oh.[BSARK] AS [Order Header Purchase Order Type]
+, ih.[FKART] AS [Invoice Header Billing Type]
+, ih.[FKTYP] AS [Invoice Header Billing Category]
+, ih.[WAERK] AS [Invoice Header Local Currency Code]
+, CASE WHEN  ih.VBTYP in ('O', 'N') THEN  -1 * (ih.[NETWR] - ISNULL(freight.[NETWR],0)) else ISNULL(ih.[NETWR],0) - ISNULL(freight.[NETWR],0) END AS [Invoice Header Net Value in Local Currency]
+, CASE WHEN ih.VBTYP in ('O', 'N') THEN -1 *ISNULL(freight.[NETWR],0) ELSE ISNULL(freight.[NETWR],0) END AS [Invoice Header Freight Cost]
+, ii.[VGBEL] AS [Invoice Item Delivery Number]
+, dh.[LFDAT] AS [Delivery Header Delivery Date]
+, ii.[MATNR] AS [Invoice Item Product Code]
+, ii.[ARKTX] AS [Invoice Item Description]
+, ii.[MATKL] AS [Invoice Item Product Type]
+, ii.[PSTYV] AS [Invoice Item Category]
+, ISNULL(ii.FKIMG,0) AS [Invoice Item Actual Invoiced Quantity]
+, ISNULL(ii.KZWI2, 0) AS [Invoice Item Discount]
+, ii.[PRCTR] AS [Invoice Item Profit Center]
+, ii.[AUBEL] AS [Invoice Item Order Number]
+, ii.[AUPOS] AS [Order Item Number]
+, CASE WHEN  ih.VBTYP in ('O', 'N') THEN -1 * ISNULL(ii.NETWR,0) ELSE ISNULL(ii.NETWR,0) END AS [Invoice Item Net Value in Local Currency]
+, ISNULL(ii.MWSBP,0) AS [Invoice Item Tax Amount in Local Currency]
+, CAST(dt_reference_ID.DATA AS NVARCHAR(100)) AS [Invoice Item Reference ID]
+, CAST(dt_sender_ID.DATA AS NVARCHAR(20)) AS [Invoice Item XML Sender ID]
+, CAST(dt_cXML_from_ID.DATA AS NVARCHAR(20)) AS [Invoice Item XML From ID]
+, CAST(dt_ext_ship_to.DATA AS NVARCHAR(20)) AS [Invoice Item External Ship To]
+, CAST(dt_ext_bill_to.DATA AS NVARCHAR(20)) AS [Invoice Item External Bill To]
+, oh.[VTWEG] AS [Order Header Distribution Channel]
+, oh.[SPART] AS [Order Header Division]
+, oh.[VKORG] AS [Order Header Sales Organization]
+, CASE WHEN FKSTO = 'X' Then 1 ELSE 0 END AS [Invoice Header Cancelled Invoice Flag]
+, ih.[AEDAT] AS [Invoice Header Cancelled Invoice Date]
+, ih.[SFAKN] AS [Invoice Header Associated Invoice Number]
+, N'SAPStaging' AS [Database Source] 
+
+FROM tmp_Invoice_Header_CT ih 
+--FROM [SAPStaging].dbo.INVOICE_HEADER ih
+       INNER JOIN [SAPStaging].dbo.INVOICE_ITEMS ii ON (ih.vbeln = ii.vbeln and ii.PRCTR is not null )--and ii.netwr &lt;&gt; 0 )
+	   INNER JOIN [SAPStaging].dbo.DOCUMENT_PARTNERS dp ON (ih.vbeln = dp.vbeln and dp.parvw = 'WE') --Ship To Code
+       LEFT JOIN [SAPStaging].dbo.ORDER_HEADER oh ON (ii.aubel = oh.vbeln)
+	   LEFT JOIN [SAPStaging].dbo.DELIVERY_HEADER dh ON (ii.VGBEL = dh.vbeln)
+	   LEFT JOIN [SAPStaging].dbo.INVOICE_ITEMS freight ON (freight.vbeln = ii.vbeln and freight.vgbel = dh.vbeln and freight.matnr = 'FREIGHT' and freight.aubel is not null) 
+       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_reference_id ON (ii.aubel = dt_reference_id.VBELN and dt_reference_id.[TDID] = 'S015')
+       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_sender_ID ON (ii.aubel = dt_sender_ID.VBELN and dt_sender_ID.[TDID] = 'S017')
+       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_cXML_from_ID ON (ii.aubel = dt_cXML_from_ID.VBELN and dt_cXML_from_ID.[TDID] = 'S016')
+       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_ext_ship_to ON (ii.aubel = dt_ext_ship_to.VBELN and dt_ext_ship_to.[TDID] = 'S018')
+       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_ext_bill_to ON (ii.aubel = dt_ext_bill_to.VBELN and dt_ext_bill_to.[TDID] = 'S023')
+       LEFT JOIN [SAPStaging].[dbo].[DOCUMENT_TEXTS] dt_po_date ON (ii.aubel = dt_po_date.VBELN and dt_po_date.[TDID] = 'S026')</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{4C1EEA4E-C206-458D-992A-03DC513FA16A}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="SQL_CTE">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{B6DD7E1B-7842-4FED-869F-891F2543B163}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="starting_lsn">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{898B5604-9696-483C-84EF-28C81AE5C398}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="UserName">
+      <DTS:VariableValue
+        DTS:DataType="8">NEB\Guth</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\SEQ - Load MDS NEB Model"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{6c93d088-b574-42d4-bfd4-004246a14f03}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQ - Load MDS NEB Model">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Load MDS NEB Model\TSQL - Populate MDS Model from Staging - Invoice Entity"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{a3edee60-5399-40f1-a6ca-8775fa52ba38}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Populate MDS Model from Staging - Invoice Entity"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3CE7B11D-CCE3-4B3B-84D8-2233EC30E909}"
+              SQLTask:SqlStatementSource="DECLARE @RC int &#xA;DECLARE @VersionName nvarchar(50) &#xA;DECLARE @LogFlag int &#xA;DECLARE @BatchTag nvarchar(50)&#xA;&#xA;SET @VersionName = N'VERSION_1' &#xA;SET @LogFlag = 1 &#xA;SET @BatchTag = ? &#xA;&#xA;EXECUTE @RC = [stg].[udp_Invoice_Leaf] &#xA;   @VersionName &#xA;  ,@LogFlag &#xA;  ,@BatchTag &#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::BatchTag"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQ - Load MDS Staging Tables"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{cb2c51e7-a652-4846-bab1-464b023be582}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQ - Load MDS Staging Tables">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{eb915918-6605-497d-aa14-5ca6f8d24502}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DFLT - Populate MDS Staging - Invoice Entity"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="DC - Create Batch Tag"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportType]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportType]"
+                          name="ImportType"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">0</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">0</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[BatchTag]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="IgnoreFailure"
+                          length="50"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[BatchTag]"
+                          name="BatchTag"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">(DT_WSTR,50)@[User::BatchTag]</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">(DT_WSTR,50)@[User::BatchTag]</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportStatus_ID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportStatus_ID]"
+                          name="ImportStatus_ID"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">0</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">0</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[stg].[Invoice_Leaf]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[MDS]"
+                      connectionManagerRefId="Package.ConnectionManagers[MDS]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Date]"
+                          cachedDataType="dbDate"
+                          cachedName="Invoice Header Date"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Date]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Date]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Customer Purchase Order Number]"
+                          cachedDataType="wstr"
+                          cachedLength="35"
+                          cachedName="Invoice Header Customer Purchase Order Number"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Customer Purchase Order Number]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Customer Purchase Order Number]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Order Header Purchase Order Type]"
+                          cachedDataType="wstr"
+                          cachedLength="4"
+                          cachedName="Order Header Purchase Order Type"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Header Purchase Order Type]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Purchase Order Type]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Billing Type]"
+                          cachedDataType="wstr"
+                          cachedLength="4"
+                          cachedName="Invoice Header Billing Type"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Billing Type]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Billing Type]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Billing Category]"
+                          cachedDataType="wstr"
+                          cachedLength="1"
+                          cachedName="Invoice Header Billing Category"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Billing Category]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Billing Category]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Local Currency Code]"
+                          cachedDataType="wstr"
+                          cachedLength="5"
+                          cachedName="Invoice Header Local Currency Code"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Local Currency Code]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Local Currency Code]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Net Value in Local Currency]"
+                          cachedDataType="numeric"
+                          cachedName="Invoice Header Net Value in Local Currency"
+                          cachedPrecision="18"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Net Value in Local Currency]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Net Value in Local Currency]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Delivery Number]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Invoice Item Delivery Number"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Delivery Number]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Delivery Number]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Product Code]"
+                          cachedDataType="wstr"
+                          cachedLength="18"
+                          cachedName="Invoice Item Product Code"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Product Code]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Product Code]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Description]"
+                          cachedDataType="wstr"
+                          cachedLength="40"
+                          cachedName="Invoice Item Description"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Description]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Description]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Product Type]"
+                          cachedDataType="wstr"
+                          cachedLength="9"
+                          cachedName="Invoice Item Product Type"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Product Type]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Product Type]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Category]"
+                          cachedDataType="wstr"
+                          cachedLength="4"
+                          cachedName="Invoice Item Category"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Category]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Category]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Actual Invoiced Quantity]"
+                          cachedDataType="numeric"
+                          cachedName="Invoice Item Actual Invoiced Quantity"
+                          cachedPrecision="13"
+                          cachedScale="3"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Actual Invoiced Quantity]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Actual Invoiced Quantity]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Discount]"
+                          cachedDataType="numeric"
+                          cachedName="Invoice Item Discount"
+                          cachedPrecision="13"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Discount]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Discount]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Profit Center]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Invoice Item Profit Center"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Profit Center]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Profit Center]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Order Number]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Invoice Item Order Number"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Order Number]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Order Number]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Order Item Number]"
+                          cachedDataType="numeric"
+                          cachedName="Order Item Number"
+                          cachedPrecision="6"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Item Number]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Item Number]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Net Value in Local Currency]"
+                          cachedDataType="numeric"
+                          cachedName="Invoice Item Net Value in Local Currency"
+                          cachedPrecision="17"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Net Value in Local Currency]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Net Value in Local Currency]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Tax Amount in Local Currency]"
+                          cachedDataType="numeric"
+                          cachedName="Invoice Item Tax Amount in Local Currency"
+                          cachedPrecision="13"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Tax Amount in Local Currency]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Tax Amount in Local Currency]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Order Header Distribution Channel]"
+                          cachedDataType="wstr"
+                          cachedLength="2"
+                          cachedName="Order Header Distribution Channel"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Header Distribution Channel]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Distribution Channel]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Order Header Division]"
+                          cachedDataType="wstr"
+                          cachedLength="2"
+                          cachedName="Order Header Division"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Header Division]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Division]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Order Header Sales Organization]"
+                          cachedDataType="wstr"
+                          cachedLength="4"
+                          cachedName="Order Header Sales Organization"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Header Sales Organization]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Sales Organization]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Cancelled Invoice Flag]"
+                          cachedDataType="i4"
+                          cachedName="Invoice Header Cancelled Invoice Flag"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Cancelled Invoice Flag]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Cancelled Invoice Flag]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Cancelled Invoice Date]"
+                          cachedDataType="dbDate"
+                          cachedName="Invoice Header Cancelled Invoice Date"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Cancelled Invoice Date]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Cancelled Invoice Date]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Associated Invoice Number]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Invoice Header Associated Invoice Number"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Associated Invoice Number]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Associated Invoice Number]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Database Source]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Database Source"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Database Source]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Database Source]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Bill To Ship To Code]"
+                          cachedDataType="wstr"
+                          cachedLength="21"
+                          cachedName="Bill To Ship To Code"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Bill To Ship To Code]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Bill To Ship To Code]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Purchase Order Date]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="Invoice Item Purchase Order Date"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Purchase Order Date]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Purchase Order Date]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Freight Cost]"
+                          cachedDataType="numeric"
+                          cachedName="Invoice Header Freight Cost"
+                          cachedPrecision="17"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Freight Cost]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Freight Cost]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Delivery Header Delivery Date]"
+                          cachedDataType="dbDate"
+                          cachedName="Delivery Header Delivery Date"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Delivery Header Delivery Date]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Delivery Header Delivery Date]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item Reference ID]"
+                          cachedDataType="wstr"
+                          cachedLength="100"
+                          cachedName="Invoice Item Reference ID"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Reference ID]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Reference ID]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item XML Sender ID]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="Invoice Item XML Sender ID"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item XML Sender ID]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item XML Sender ID]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item XML From ID]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="Invoice Item XML From ID"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item XML From ID]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item XML From ID]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item External Ship To]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="Invoice Item External Ship To"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item External Ship To]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item External Ship To]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Item External Bill To]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="Invoice Item External Bill To"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item External Bill To]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item External Bill To]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ImportType]"
+                          cachedDataType="i4"
+                          cachedName="ImportType"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportType]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportType]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[BatchTag]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="BatchTag"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BatchTag]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[BatchTag]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ImportStatus_ID]"
+                          cachedDataType="i4"
+                          cachedName="ImportStatus_ID"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportStatus_ID]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output].Columns[ImportStatus_ID]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Line Number]"
+                          cachedDataType="wstr"
+                          cachedLength="21"
+                          cachedName="Invoice Line Number"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Code]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Line Number]" />
+                        <inputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Invoice Header Invoice Number]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="Invoice Header Invoice Number"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Name]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Invoice Number]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportType]"
+                          dataType="ui1"
+                          name="ImportType" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ImportStatus_ID]"
+                          dataType="ui1"
+                          name="ImportStatus_ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Batch_ID]"
+                          dataType="i4"
+                          name="Batch_ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[BatchTag]"
+                          dataType="wstr"
+                          length="50"
+                          name="BatchTag" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ErrorCode]"
+                          dataType="i4"
+                          name="ErrorCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Code]"
+                          dataType="wstr"
+                          length="250"
+                          name="Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Name]"
+                          dataType="wstr"
+                          length="250"
+                          name="Name" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[NewCode]"
+                          dataType="wstr"
+                          length="250"
+                          name="NewCode" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Date]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Header Date" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Customer Purchase Order Number]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Header Customer Purchase Order Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Purchase Order Date]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Purchase Order Date" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Billing Category]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Header Billing Category" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Local Currency Code]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Header Local Currency Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Net Value in Local Currency]"
+                          dataType="numeric"
+                          name="Invoice Header Net Value in Local Currency"
+                          precision="38"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Freight Cost]"
+                          dataType="numeric"
+                          name="Invoice Header Freight Cost"
+                          precision="38" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Delivery Number]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Delivery Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Delivery Header Delivery Date]"
+                          dataType="wstr"
+                          length="100"
+                          name="Delivery Header Delivery Date" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Product Code]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Product Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Description]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Description" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Product Type]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Product Type" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Category]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Category" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Actual Invoiced Quantity]"
+                          dataType="numeric"
+                          name="Invoice Item Actual Invoiced Quantity"
+                          precision="38" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Discount]"
+                          dataType="numeric"
+                          name="Invoice Item Discount"
+                          precision="38"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Profit Center]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Profit Center" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Order Number]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Order Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Item Number]"
+                          dataType="numeric"
+                          name="Order Item Number"
+                          precision="38" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Net Value in Local Currency]"
+                          dataType="numeric"
+                          name="Invoice Item Net Value in Local Currency"
+                          precision="38"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Tax Amount in Local Currency]"
+                          dataType="numeric"
+                          name="Invoice Item Tax Amount in Local Currency"
+                          precision="38"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item Reference ID]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Reference ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item XML Sender ID]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item XML Sender ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item XML From ID]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item XML From ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item External Ship To]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item External Ship To" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Item External Bill To]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item External Bill To" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Header Distribution Channel]"
+                          dataType="wstr"
+                          length="100"
+                          name="Order Header Distribution Channel" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Header Division]"
+                          dataType="wstr"
+                          length="100"
+                          name="Order Header Division" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Header Sales Organization]"
+                          dataType="wstr"
+                          length="100"
+                          name="Order Header Sales Organization" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Cancelled Invoice Flag]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Header Cancelled Invoice Flag" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Cancelled Invoice Date]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Header Cancelled Invoice Date" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Associated Invoice Number]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Header Associated Invoice Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Database Source]"
+                          dataType="wstr"
+                          length="100"
+                          name="Database Source" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Bill To Ship To Code]"
+                          dataType="wstr"
+                          length="250"
+                          name="Bill To Ship To Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Invoice Header Billing Type]"
+                          dataType="wstr"
+                          length="250"
+                          name="Invoice Header Billing Type" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Order Header Purchase Order Type]"
+                          dataType="wstr"
+                          length="250"
+                          name="Order Header Purchase Order Type" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="OLE DB Source"
+                  usesDispositions="true"
+                  validateExternalMetadata="False"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[mdm].[vw_customer]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT ID, [Invoice Line Number], [Invoice Header Invoice Number], [Invoice Header Date], [Bill To Ship To Code], [Invoice Header Customer Purchase Order Number], 
+                  [Invoice Item Purchase Order Date], [Order Header Purchase Order Type], [Invoice Header Billing Type], [Invoice Header Billing Category], 
+                  [Invoice Header Local Currency Code], [Invoice Header Net Value in Local Currency], [Invoice Header Freight Cost], [Invoice Item Delivery Number], 
+                  [Delivery Header Delivery Date], [Invoice Item Product Code], [Invoice Item Description], [Invoice Item Product Type], [Invoice Item Category], 
+                  [Invoice Item Actual Invoiced Quantity], [Invoice Item Discount], [Invoice Item Profit Center], [Invoice Item Order Number], [Order Item Number], 
+                  [Invoice Item Net Value in Local Currency], [Invoice Item Tax Amount in Local Currency], [Invoice Item Reference ID], [Invoice Item XML Sender ID], [Invoice Item XML From ID], 
+                  [Invoice Item External Ship To], [Invoice Item External Bill To], [Order Header Distribution Channel], [Order Header Division], [Order Header Sales Organization], 
+                  [Invoice Header Cancelled Invoice Flag], [Invoice Header Cancelled Invoice Date], [Invoice Header Associated Invoice Number], [Database Source]
+FROM     stage.Invoice</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable">User::SQL</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[FATI3.SAPStaging]"
+                      connectionManagerRefId="Package.ConnectionManagers[FATI3.SAPStaging]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Invoice Number]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Invoice Number]"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Invoice Number]"
+                          name="Invoice Header Invoice Number"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Date]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Date]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Date]"
+                          name="Invoice Header Date"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Customer Purchase Order Number]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Customer Purchase Order Number]"
+                          length="35"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Customer Purchase Order Number]"
+                          name="Invoice Header Customer Purchase Order Number"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Purchase Order Type]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Header Purchase Order Type]"
+                          length="4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Purchase Order Type]"
+                          name="Order Header Purchase Order Type"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Billing Type]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Billing Type]"
+                          length="4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Billing Type]"
+                          name="Invoice Header Billing Type"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Billing Category]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Billing Category]"
+                          length="1"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Billing Category]"
+                          name="Invoice Header Billing Category"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Local Currency Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Local Currency Code]"
+                          length="5"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Local Currency Code]"
+                          name="Invoice Header Local Currency Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Net Value in Local Currency]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Net Value in Local Currency]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Net Value in Local Currency]"
+                          name="Invoice Header Net Value in Local Currency"
+                          precision="18"
+                          scale="2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Line Number]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Line Number]"
+                          length="21"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Line Number]"
+                          name="Invoice Line Number"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Delivery Number]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Delivery Number]"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Delivery Number]"
+                          name="Invoice Item Delivery Number"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Product Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Product Code]"
+                          length="18"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Product Code]"
+                          name="Invoice Item Product Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Description]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Description]"
+                          length="40"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Description]"
+                          name="Invoice Item Description"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Product Type]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Product Type]"
+                          length="9"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Product Type]"
+                          name="Invoice Item Product Type"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Category]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Category]"
+                          length="4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Category]"
+                          name="Invoice Item Category"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Actual Invoiced Quantity]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Actual Invoiced Quantity]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Actual Invoiced Quantity]"
+                          name="Invoice Item Actual Invoiced Quantity"
+                          precision="13"
+                          scale="3"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Discount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Discount]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Discount]"
+                          name="Invoice Item Discount"
+                          precision="13"
+                          scale="2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Profit Center]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Profit Center]"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Profit Center]"
+                          name="Invoice Item Profit Center"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Order Number]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Order Number]"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Order Number]"
+                          name="Invoice Item Order Number"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Item Number]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Item Number]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Item Number]"
+                          name="Order Item Number"
+                          precision="6"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Net Value in Local Currency]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Net Value in Local Currency]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Net Value in Local Currency]"
+                          name="Invoice Item Net Value in Local Currency"
+                          precision="17"
+                          scale="2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Tax Amount in Local Currency]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Tax Amount in Local Currency]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Tax Amount in Local Currency]"
+                          name="Invoice Item Tax Amount in Local Currency"
+                          precision="13"
+                          scale="2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Distribution Channel]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Header Distribution Channel]"
+                          length="2"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Distribution Channel]"
+                          name="Order Header Distribution Channel"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Division]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Header Division]"
+                          length="2"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Division]"
+                          name="Order Header Division"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Sales Organization]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Header Sales Organization]"
+                          length="4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Order Header Sales Organization]"
+                          name="Order Header Sales Organization"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Cancelled Invoice Flag]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Cancelled Invoice Flag]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Cancelled Invoice Flag]"
+                          name="Invoice Header Cancelled Invoice Flag"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Cancelled Invoice Date]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Cancelled Invoice Date]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Cancelled Invoice Date]"
+                          name="Invoice Header Cancelled Invoice Date"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Associated Invoice Number]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Associated Invoice Number]"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Associated Invoice Number]"
+                          name="Invoice Header Associated Invoice Number"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Database Source]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Database Source]"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Database Source]"
+                          name="Database Source"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Bill To Ship To Code]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Bill To Ship To Code]"
+                          length="21"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Bill To Ship To Code]"
+                          name="Bill To Ship To Code"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Purchase Order Date]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Purchase Order Date]"
+                          length="25"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Purchase Order Date]"
+                          name="Invoice Item Purchase Order Date"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Freight Cost]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Freight Cost]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Header Freight Cost]"
+                          name="Invoice Header Freight Cost"
+                          precision="17"
+                          scale="2"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Delivery Header Delivery Date]"
+                          dataType="dbDate"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Delivery Header Delivery Date]"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Delivery Header Delivery Date]"
+                          name="Delivery Header Delivery Date"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Reference ID]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Reference ID]"
+                          length="100"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item Reference ID]"
+                          name="Invoice Item Reference ID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item XML Sender ID]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item XML Sender ID]"
+                          length="20"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item XML Sender ID]"
+                          name="Invoice Item XML Sender ID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item XML From ID]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item XML From ID]"
+                          length="20"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item XML From ID]"
+                          name="Invoice Item XML From ID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item External Ship To]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item External Ship To]"
+                          length="20"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item External Ship To]"
+                          name="Invoice Item External Ship To"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item External Bill To]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item External Bill To]"
+                          length="20"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].Columns[Invoice Item External Bill To]"
+                          name="Invoice Item External Bill To"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Invoice Number]"
+                          dataType="wstr"
+                          length="10"
+                          name="Invoice Header Invoice Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Date]"
+                          dataType="dbDate"
+                          name="Invoice Header Date" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Customer Purchase Order Number]"
+                          dataType="wstr"
+                          length="35"
+                          name="Invoice Header Customer Purchase Order Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Header Purchase Order Type]"
+                          dataType="wstr"
+                          length="4"
+                          name="Order Header Purchase Order Type" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Billing Type]"
+                          dataType="wstr"
+                          length="4"
+                          name="Invoice Header Billing Type" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Billing Category]"
+                          dataType="wstr"
+                          length="1"
+                          name="Invoice Header Billing Category" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Local Currency Code]"
+                          dataType="wstr"
+                          length="5"
+                          name="Invoice Header Local Currency Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Net Value in Local Currency]"
+                          dataType="numeric"
+                          name="Invoice Header Net Value in Local Currency"
+                          precision="18"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Line Number]"
+                          dataType="wstr"
+                          length="21"
+                          name="Invoice Line Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Delivery Number]"
+                          dataType="wstr"
+                          length="10"
+                          name="Invoice Item Delivery Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Product Code]"
+                          dataType="wstr"
+                          length="18"
+                          name="Invoice Item Product Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Description]"
+                          dataType="wstr"
+                          length="40"
+                          name="Invoice Item Description" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Product Type]"
+                          dataType="wstr"
+                          length="9"
+                          name="Invoice Item Product Type" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Category]"
+                          dataType="wstr"
+                          length="4"
+                          name="Invoice Item Category" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Actual Invoiced Quantity]"
+                          dataType="numeric"
+                          name="Invoice Item Actual Invoiced Quantity"
+                          precision="13"
+                          scale="3" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Discount]"
+                          dataType="numeric"
+                          name="Invoice Item Discount"
+                          precision="13"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Profit Center]"
+                          dataType="wstr"
+                          length="10"
+                          name="Invoice Item Profit Center" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Order Number]"
+                          dataType="wstr"
+                          length="10"
+                          name="Invoice Item Order Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Item Number]"
+                          dataType="numeric"
+                          name="Order Item Number"
+                          precision="6" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Net Value in Local Currency]"
+                          dataType="numeric"
+                          name="Invoice Item Net Value in Local Currency"
+                          precision="17"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Tax Amount in Local Currency]"
+                          dataType="numeric"
+                          name="Invoice Item Tax Amount in Local Currency"
+                          precision="13"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Header Distribution Channel]"
+                          dataType="wstr"
+                          length="2"
+                          name="Order Header Distribution Channel" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Header Division]"
+                          dataType="wstr"
+                          length="2"
+                          name="Order Header Division" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Order Header Sales Organization]"
+                          dataType="wstr"
+                          length="4"
+                          name="Order Header Sales Organization" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Cancelled Invoice Flag]"
+                          dataType="i4"
+                          name="Invoice Header Cancelled Invoice Flag" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Cancelled Invoice Date]"
+                          dataType="dbDate"
+                          name="Invoice Header Cancelled Invoice Date" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Associated Invoice Number]"
+                          dataType="wstr"
+                          length="10"
+                          name="Invoice Header Associated Invoice Number" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Database Source]"
+                          dataType="wstr"
+                          length="10"
+                          name="Database Source" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Bill To Ship To Code]"
+                          dataType="wstr"
+                          length="21"
+                          name="Bill To Ship To Code" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Purchase Order Date]"
+                          dataType="wstr"
+                          length="25"
+                          name="Invoice Item Purchase Order Date" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Header Freight Cost]"
+                          dataType="numeric"
+                          name="Invoice Header Freight Cost"
+                          precision="17"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Delivery Header Delivery Date]"
+                          dataType="dbDate"
+                          name="Delivery Header Delivery Date" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item Reference ID]"
+                          dataType="wstr"
+                          length="100"
+                          name="Invoice Item Reference ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item XML Sender ID]"
+                          dataType="wstr"
+                          length="20"
+                          name="Invoice Item XML Sender ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item XML From ID]"
+                          dataType="wstr"
+                          length="20"
+                          name="Invoice Item XML From ID" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item External Ship To]"
+                          dataType="wstr"
+                          length="20"
+                          name="Invoice Item External Ship To" />
+                        <externalMetadataColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Invoice Item External Bill To]"
+                          dataType="wstr"
+                          length="20"
+                          name="Invoice Item External Bill To" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Invoice Number]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Invoice Number]"
+                          name="Invoice Header Invoice Number" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Date]"
+                          dataType="dbDate"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Date]"
+                          name="Invoice Header Date" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Bill To Ship To Code]"
+                          dataType="wstr"
+                          length="21"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Bill To Ship To Code]"
+                          name="Bill To Ship To Code" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Customer Purchase Order Number]"
+                          dataType="wstr"
+                          length="35"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Customer Purchase Order Number]"
+                          name="Invoice Header Customer Purchase Order Number" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Header Purchase Order Type]"
+                          dataType="wstr"
+                          length="4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Header Purchase Order Type]"
+                          name="Order Header Purchase Order Type" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Purchase Order Date]"
+                          dataType="wstr"
+                          length="25"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Purchase Order Date]"
+                          name="Invoice Item Purchase Order Date" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Billing Type]"
+                          dataType="wstr"
+                          length="4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Billing Type]"
+                          name="Invoice Header Billing Type" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Billing Category]"
+                          dataType="wstr"
+                          length="1"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Billing Category]"
+                          name="Invoice Header Billing Category" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Local Currency Code]"
+                          dataType="wstr"
+                          length="5"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Local Currency Code]"
+                          name="Invoice Header Local Currency Code" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Net Value in Local Currency]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Net Value in Local Currency]"
+                          name="Invoice Header Net Value in Local Currency"
+                          precision="18"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Line Number]"
+                          dataType="wstr"
+                          length="21"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Line Number]"
+                          name="Invoice Line Number" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Freight Cost]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Freight Cost]"
+                          name="Invoice Header Freight Cost"
+                          precision="17"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Delivery Number]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Delivery Number]"
+                          name="Invoice Item Delivery Number" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Delivery Header Delivery Date]"
+                          dataType="dbDate"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Delivery Header Delivery Date]"
+                          name="Delivery Header Delivery Date" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Product Code]"
+                          dataType="wstr"
+                          length="18"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Product Code]"
+                          name="Invoice Item Product Code" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Description]"
+                          dataType="wstr"
+                          length="40"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Description]"
+                          name="Invoice Item Description" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Product Type]"
+                          dataType="wstr"
+                          length="9"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Product Type]"
+                          name="Invoice Item Product Type" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Category]"
+                          dataType="wstr"
+                          length="4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Category]"
+                          name="Invoice Item Category" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Actual Invoiced Quantity]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Actual Invoiced Quantity]"
+                          name="Invoice Item Actual Invoiced Quantity"
+                          precision="13"
+                          scale="3" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Discount]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Discount]"
+                          name="Invoice Item Discount"
+                          precision="13"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Profit Center]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Profit Center]"
+                          name="Invoice Item Profit Center" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Order Number]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Order Number]"
+                          name="Invoice Item Order Number" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Item Number]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Item Number]"
+                          name="Order Item Number"
+                          precision="6" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Net Value in Local Currency]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Net Value in Local Currency]"
+                          name="Invoice Item Net Value in Local Currency"
+                          precision="17"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Tax Amount in Local Currency]"
+                          dataType="numeric"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Tax Amount in Local Currency]"
+                          name="Invoice Item Tax Amount in Local Currency"
+                          precision="13"
+                          scale="2" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Reference ID]"
+                          dataType="wstr"
+                          length="100"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item Reference ID]"
+                          name="Invoice Item Reference ID" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item XML Sender ID]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item XML Sender ID]"
+                          name="Invoice Item XML Sender ID" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item XML From ID]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item XML From ID]"
+                          name="Invoice Item XML From ID" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item External Ship To]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item External Ship To]"
+                          name="Invoice Item External Ship To" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item External Bill To]"
+                          dataType="wstr"
+                          length="20"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Item External Bill To]"
+                          name="Invoice Item External Bill To" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Header Distribution Channel]"
+                          dataType="wstr"
+                          length="2"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Header Distribution Channel]"
+                          name="Order Header Distribution Channel" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Header Division]"
+                          dataType="wstr"
+                          length="2"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Header Division]"
+                          name="Order Header Division" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Header Sales Organization]"
+                          dataType="wstr"
+                          length="4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Order Header Sales Organization]"
+                          name="Order Header Sales Organization" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Cancelled Invoice Flag]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Cancelled Invoice Flag]"
+                          name="Invoice Header Cancelled Invoice Flag" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Cancelled Invoice Date]"
+                          dataType="dbDate"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Cancelled Invoice Date]"
+                          name="Invoice Header Cancelled Invoice Date" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Associated Invoice Number]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Invoice Header Associated Invoice Number]"
+                          name="Invoice Header Associated Invoice Number" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Database Source]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Database Source]"
+                          name="Database Source" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity.Paths[Derived Column Output]"
+                  endId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity.Paths[OLE DB Source Output]"
+                  endId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag.Inputs[Derived Column Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Load MDS Staging Tables\TSQL - Delete from Staging - Invoice Entity"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{7b1c8eca-d052-4af4-8348-6a5b2f196d34}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Delete from Staging - Invoice Entity"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3CE7B11D-CCE3-4B3B-84D8-2233EC30E909}"
+              SQLTask:SqlStatementSource="delete from&#xA;stg.Invoice_Leaf&#xA;where errorCode = 0" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQ - Load MDS Staging Tables.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{1cca9185-c386-4d2d-bc96-321266a66073}"
+          DTS:From="Package\SEQ - Load MDS Staging Tables\TSQL - Delete from Staging - Invoice Entity"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{92723283-1CBF-417D-B11A-D69480437219}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQ - Select and Prepare CDC Data Set for Loading to MDS">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Establish LSN Range and Populate Temp Table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:DelayValidation="True"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{24BBCFBC-ED85-4CD5-867E-0FF378F7017C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Establish LSN Range and Populate Temp Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{AC1C0F06-7A8D-471D-AB6C-263A6B31E7E3}"
+              SQLTask:SqlStatementSource="DECLARE &#xA;&#x9;@begin_time&#x9;&#x9;datetime, &#xA;&#x9;@end_time&#x9;&#x9;datetime, &#xA;&#x9;@from_lsn&#x9;&#x9;binary(10), &#xA;&#x9;@to_lsn&#x9;&#x9;&#x9;binary(10);&#xA;&#xA;-- Obtain the beginning of the time interval, which is the last time the package executed.&#xA;-- This will be passed from the previous execute sql task (package execution information comes from SSISDB)&#xA;SET @begin_time = ?;&#xA;--SET @begin_time = GETDATE()-1;&#xA;&#xA;-- Obtain the end of the time interval.&#xA;SET @end_time = GETDATE();&#xA;&#xA;-- Map the time interval to a change data capture query range.&#xA;SET @from_lsn = sys.fn_cdc_map_time_to_lsn('smallest greater than or equal', @begin_time);&#xA;SET @to_lsn = sys.fn_cdc_map_time_to_lsn('largest less than or equal', @end_time);&#xA;&#xA;--Return values for assignment to SSIS package variables&#xA;select @from_lsn,@to_lsn&#xA;IF object_id('tmp_Invoice_Header_CT') is not null&#xA;   DROP table tmp_Invoice_Header_CT;&#xA;&#xA;--IF object_id(' tmp_INVOICE_HEADER') is not null&#xA;--  DROP table  tmp_INVOICE_HEADER;&#xA;&#xA; select *  into  tmp_Invoice_Header_CT from  [cdc].[fn_cdc_get_net_changes_dbo_INVOICE_HEADER]( @from_lsn , @to_lsn , 'all with merge' )"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::starting_lsn" />
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="1"
+                SQLTask:DtsVariableName="User::ending_lsn" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::Previous_Execution_End_Time"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Get Previous Package Execution End Time"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{8D4F44A6-0CCA-4E18-8625-F0AB43F8D567}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Get Previous Package Execution End Time"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{4C1E197D-29A5-4401-9D8D-03AFF4B50D35}"
+              SQLTask:SqlStatementSource="SELECT CAST(ISNULL(MAX(end_time), '2015-07-22 12:00:00.000') as datetime)&#xA;  FROM [SSISDB].[catalog].[executions]&#xA;where package_name = ?"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::Previous_Execution_End_Time" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::PackageName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{1F7FAB5E-CAA7-44DA-9178-AEA069EFF696}"
+          DTS:From="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Get Previous Package Execution End Time"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Establish LSN Range and Populate Temp Table" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\SEQ - Validate MDS NEB Model"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{69aecae5-53bb-43c1-85d4-ff647d8311ca}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="SEQ - Validate MDS NEB Model">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\SEQ - Validate MDS NEB Model\TSQL - Validate MDS NEB Model"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{61e6a292-09bc-4137-aaaa-bf56959543fc}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Validate MDS NEB Model"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{3CE7B11D-CCE3-4B3B-84D8-2233EC30E909}"
+              SQLTask:SqlStatementSource="DECLARE @ModelName nVarchar(50) = 'NEB' &#xA;DECLARE @Model_id int &#xA;DECLARE @UserName nvarchar(50)=? &#xA;DECLARE @User_ID int &#xA;DECLARE @Version_ID int&#xA;&#xA;SET @User_ID =  (SELECT ID  &#xA;                 FROM  mdm.tblUser u &#xA;                 WHERE u.UserName = @UserName)&#xA;&#xA;SET @Model_ID = (SELECT Model_ID &#xA;                 FROM mdm.viw_SYSTEM_SCHEMA_VERSION &#xA;                 WHERE Model_Name = @ModelName)&#xA;&#xA;SET @Version_ID = (SELECT MAX(ID) &#xA;                   FROM mdm.viw_SYSTEM_SCHEMA_VERSION &#xA;                   WHERE Model_ID = @Model_ID)&#xA;&#xA;EXECUTE mdm.udpValidateModel @User_ID, @Model_ID, @Version_ID, 1&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::UserName"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="130"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{023F3989-A85C-4CEA-ADA6-6A4324395C00}"
+      DTS:From="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\SEQ - Load MDS Staging Tables" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{44393461-36B7-442E-BDEC-B18CDB69A138}"
+      DTS:From="Package\SEQ - Load MDS Staging Tables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\SEQ - Load MDS NEB Model" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{AFD4D197-92DD-4701-B681-DE5A2B43EDD4}"
+      DTS:From="Package\SEQ - Load MDS NEB Model"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\SEQ - Validate MDS NEB Model" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql12">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="352,41.6"
+          Id="Package\SEQ - Load MDS NEB Model\TSQL - Populate MDS Model from Staging - Invoice Entity"
+          TopLeft="5.5,5.50000000000007" />
+        <ContainerLayout
+          HeaderHeight="43.2"
+          IsExpanded="False"
+          PanelSize="363.2,102.4"
+          Size="235.2,43.2"
+          Id="Package\SEQ - Load MDS NEB Model"
+          TopLeft="79.9,211.9" />
+        <NodeLayout
+          Size="294.4,41.6"
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity"
+          TopLeft="5.50000000000003,113.5" />
+        <NodeLayout
+          Size="208,48"
+          Id="Package\SEQ - Load MDS Staging Tables\TSQL - Delete from Staging - Invoice Entity"
+          TopLeft="48.7,5.5" />
+        <EdgeLayout
+          Id="Package\SEQ - Load MDS Staging Tables.PrecedenceConstraints[Constraint]"
+          TopLeft="152.7,53.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.0000000000001"
+              Start="0,0"
+              End="0,52.5000000000001">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5000000000001" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.2"
+          IsExpanded="False"
+          PanelSize="305.6,210.4"
+          Size="253.6,43.2"
+          Id="Package\SEQ - Load MDS Staging Tables"
+          TopLeft="70.7000000000001,108.088235285538" />
+        <NodeLayout
+          Size="336,41.6"
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Establish LSN Range and Populate Temp Table"
+          TopLeft="5.50000000000003,107.1" />
+        <NodeLayout
+          Size="313.6,41.6"
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Get Previous Package Execution End Time"
+          TopLeft="16.7,5.50000000000007" />
+        <EdgeLayout
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS.PrecedenceConstraints[Constraint]"
+          TopLeft="173.5,47.1000000000001">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.0000000000001"
+              Start="0,0"
+              End="0,52.5000000000001">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5000000000001" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43.2"
+          IsExpanded="False"
+          PanelSize="384,204"
+          Size="384,43.2"
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS"
+          TopLeft="5.5,4.88823528553792" />
+        <NodeLayout
+          Size="232,41.6"
+          Id="Package\SEQ - Validate MDS NEB Model\TSQL - Validate MDS NEB Model"
+          TopLeft="5.5,5.50000000000007" />
+        <ContainerLayout
+          HeaderHeight="43.2"
+          IsExpanded="False"
+          PanelSize="262.4,102.4"
+          Size="262.4,43.2"
+          Id="Package\SEQ - Validate MDS NEB Model"
+          TopLeft="66.3000000000001,315.1" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="197.5,48.0882352855379">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.0000000000001"
+              Start="0,0"
+              End="0,52.5000000000001">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5000000000001" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="197.5,151.288235285538">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60.6117647144621"
+              Start="0,0"
+              End="0,53.1117647144621">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,53.1117647144621" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="197.5,255.1">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="152,41.6"
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source"
+          TopLeft="22.3,5.49999999999995" />
+        <NodeLayout
+          Size="172.8,41.6"
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination"
+          TopLeft="11.9,208.7" />
+        <NodeLayout
+          Size="185.6,41.6"
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\DC - Create Batch Tag"
+          TopLeft="5.50000000000003,107.1" />
+        <EdgeLayout
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity.Paths[Derived Column Output]"
+          TopLeft="98.3,148.7">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59.9999999999999"
+              Start="0,0"
+              End="0,52.4999999999999">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.4999999999999" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity.Paths[OLE DB Source Output]"
+          TopLeft="98.3,47.1">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59.9999999999999"
+              Start="0,0"
+              End="0,52.4999999999999">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.4999999999999" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Invoice Entity\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
