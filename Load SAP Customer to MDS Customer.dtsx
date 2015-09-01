@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Load SAP Customer to MDS Customer"
   DTS:PackageType="5"
-  DTS:VersionBuild="183"
-  DTS:VersionGUID="{A8F6BD1D-7682-44D0-863D-19C6C13B7D1D}">
+  DTS:VersionBuild="186"
+  DTS:VersionGUID="{47B6A669-B8B3-476F-84D4-03C8B8C764D3}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -68,7 +68,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="BatchTag">
       <DTS:VariableValue
-        DTS:DataType="8">Load SAP Customer to MDS Customer - 8/27/2015 8:37:21 AM</DTS:VariableValue>
+        DTS:DataType="8">Load SAP Customer to MDS Customer - 8/31/2015 2:44:26 PM</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -1396,14 +1396,7 @@ FROM     stage.Invoice</property>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{26DE1FC6-56B2-4C3C-9F33-6387568506BE}"
-              SQLTask:SqlStatementSource="DECLARE &#xA;&#x9;@begin_time&#x9;&#x9;datetime, &#xA;&#x9;@end_time&#x9;&#x9;datetime, &#xA;&#x9;@from_lsn&#x9;&#x9;binary(10), &#xA;&#x9;@to_lsn&#x9;&#x9;&#x9;binary(10);&#xA;&#xA;-- Obtain the beginning of the time interval, which is the last time the package executed.&#xA;-- This will be passed from the previous execute sql task (package execution information comes from SSISDB)&#xA;SET @begin_time = ?;&#xA;--SET @begin_time = GETDATE()-2;&#xA;&#xA;-- Obtain the end of the time interval.&#xA;SET @end_time = GETDATE();&#xA;&#xA;-- Map the time interval to a change data capture query range.&#xA;SET @from_lsn = sys.fn_cdc_map_time_to_lsn('smallest greater than or equal', @begin_time);&#xA;SET @to_lsn = sys.fn_cdc_map_time_to_lsn('largest less than or equal', @end_time);&#xA;&#xA;--Return values for assignment to SSIS package variables&#xA;select @from_lsn,@to_lsn&#xA;IF object_id('tmp_Customer_Master_CT') is not null&#xA;   DROP table tmp_Customer_Master_CT;&#xA;&#xA; select *  into  tmp_Customer_Master_CT from  [cdc].[fn_cdc_get_net_changes_dbo_CUSTOMER_MASTER]( @from_lsn , @to_lsn , 'all with merge' )"
-              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
-              <SQLTask:ResultBinding
-                SQLTask:ResultName="0"
-                SQLTask:DtsVariableName="User::starting_lsn" />
-              <SQLTask:ResultBinding
-                SQLTask:ResultName="1"
-                SQLTask:DtsVariableName="User::ending_lsn" />
+              SQLTask:SqlStatementSource="DECLARE &#xA;&#x9;@begin_time&#x9;&#x9;datetime, &#xA;&#x9;@end_time&#x9;&#x9;datetime, &#xA;&#x9;@from_lsn&#x9;&#x9;binary(10), &#xA;&#x9;@to_lsn&#x9;&#x9;&#x9;binary(10);&#xA;&#xA;-- Obtain the beginning of the time interval, which is the last time the package executed.&#xA;-- This will be passed from the previous execute sql task (package execution information comes from SSISDB)&#xA;SET @begin_time = ?;&#xA;--SET @begin_time = GETDATE()-2;&#xA;&#xA;-- Obtain the end of the time interval.&#xA;SET @end_time = GETDATE();&#xA;&#xA;-- Map the time interval to a change data capture query range.&#xA;SET @from_lsn = sys.fn_cdc_map_time_to_lsn('smallest greater than or equal', @begin_time);&#xA;SET @to_lsn = sys.fn_cdc_map_time_to_lsn('largest less than or equal', @end_time);&#xA;&#xA;--Return values for assignment to SSIS package variables&#xA;--select @from_lsn,@to_lsn&#xA;IF object_id('tmp_Customer_Master_CT') is not null&#xA;   DROP table tmp_Customer_Master_CT;&#xA;&#xA; select *  into  tmp_Customer_Master_CT from  [cdc].[fn_cdc_get_net_changes_dbo_CUSTOMER_MASTER]( @from_lsn , @to_lsn , 'all with merge' )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
               <SQLTask:ParameterBinding
                 SQLTask:ParameterName="0"
                 SQLTask:DtsVariableName="User::Previous_Execution_End_Time"

@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Load SAP Product to MDS Product"
   DTS:PackageType="5"
-  DTS:VersionBuild="217"
-  DTS:VersionGUID="{98151C0A-365A-4284-A08C-968C810BB769}">
+  DTS:VersionBuild="230"
+  DTS:VersionGUID="{81787707-C015-4734-A2E5-74F98314204B}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -68,7 +68,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="BatchTag">
       <DTS:VariableValue
-        DTS:DataType="8">Load SAP Product to MDS Product - 8/28/2015 2:06:55 PM</DTS:VariableValue>
+        DTS:DataType="8">Load SAP Product to MDS Product - 9/1/2015 8:42:32 AM</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -944,6 +944,23 @@ FROM     stage.Invoice</property>
       <DTS:Variables />
       <DTS:Executables>
         <DTS:Executable
+          DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Drop Temp Table If Exists"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{FE8FF77E-17DE-444F-B4C3-50E3753D8E3F}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="TSQL - Drop Temp Table If Exists"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2014; © 2014 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{2383334B-0A4A-4C9B-9264-AF8032C1D8B7}"
+              SQLTask:SqlStatementSource="IF object_id('tmp_Material_Master_CT') is not null&#xA;   DROP table tmp_Material_Master_CT;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
           DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Establish LSN Range and Populate Temp Table"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:DelayValidation="True"
@@ -958,7 +975,7 @@ FROM     stage.Invoice</property>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{2383334B-0A4A-4C9B-9264-AF8032C1D8B7}"
-              SQLTask:SqlStatementSource="&#xA;DECLARE &#xA;&#x9;@begin_time&#x9;&#x9;datetime, &#xA;&#x9;@end_time&#x9;&#x9;datetime, &#xA;&#x9;@from_lsn&#x9;&#x9;binary(10), &#xA;&#x9;@to_lsn&#x9;&#x9;&#x9;binary(10);&#xA;&#xA;-- Obtain the beginning of the time interval, which is the last time the package executed.&#xA;-- This will be passed from the previous execute sql task (package execution information comes from SSISDB)&#xA;SET @begin_time = ?;&#xA;--SET @begin_time ='2015-08-26 13:21:36.230';&#xA;&#xA;-- Obtain the end of the time interval.&#xA;SET @end_time = GETDATE();&#xA;&#xA;-- Map the time interval to a change data capture query range.&#xA;SET @from_lsn = sys.fn_cdc_map_time_to_lsn('smallest greater than or equal', @begin_time);&#xA;SET @to_lsn = sys.fn_cdc_map_time_to_lsn('largest less than or equal', @end_time);&#xA;&#xA;--Return values for assignment to SSIS package variables&#xA;--select @from_lsn,@to_lsn&#xA;IF object_id('tmp_Material_Master_CT') is not null&#xA;   DROP table tmp_Material_Master_CT;&#xA; &#xA; select *  into  tmp_Material_Master_CT from  [cdc].[fn_cdc_get_net_changes_dbo_MATERIAL_MASTER]( @from_lsn , @to_lsn , 'all with merge' )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              SQLTask:SqlStatementSource="&#xA;DECLARE &#xA;&#x9;@begin_time&#x9;&#x9;datetime, &#xA;&#x9;@end_time&#x9;&#x9;datetime, &#xA;&#x9;@from_lsn&#x9;&#x9;binary(10), &#xA;&#x9;@to_lsn&#x9;&#x9;&#x9;binary(10);&#xA;&#xA;-- Obtain the beginning of the time interval, which is the last time the package executed.&#xA;-- This will be passed from the previous execute sql task (package execution information comes from SSISDB)&#xA;SET @begin_time = ?;&#xA;--SET @begin_time ='2015-08-26 13:21:36.230';&#xA;&#xA;-- Obtain the end of the time interval.&#xA;SET @end_time = GETDATE();&#xA;&#xA;-- Map the time interval to a change data capture query range.&#xA;SET @from_lsn = sys.fn_cdc_map_time_to_lsn('smallest greater than or equal', @begin_time);&#xA;SET @to_lsn = sys.fn_cdc_map_time_to_lsn('largest less than or equal', @end_time);&#xA;&#xA;--Return values for assignment to SSIS package variables&#xA;--select @from_lsn,@to_lsn&#xA;--IF object_id('tmp_Material_Master_CT') is not null&#xA;--  DROP table tmp_Material_Master_CT;&#xA; &#xA; select *  into  tmp_Material_Master_CT from  [cdc].[fn_cdc_get_net_changes_dbo_MATERIAL_MASTER]( @from_lsn , @to_lsn , 'all with merge' )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
               <SQLTask:ParameterBinding
                 SQLTask:ParameterName="0"
                 SQLTask:DtsVariableName="User::Previous_Execution_End_Time"
@@ -982,7 +999,7 @@ FROM     stage.Invoice</property>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{45EC38B8-B391-4930-A4EC-96909CEF53DF}"
-              SQLTask:SqlStatementSource="SELECT CAST(ISNULL(MAX(end_time), '2015-08-01 13:21:36.230') as datetime)&#xA;  FROM [SSISDB].[catalog].[executions]&#xA;  where package_name = ?"
+              SQLTask:SqlStatementSource="SELECT CAST(ISNULL(MAX(end_time), '2015-08-01 13:21:36.230') as datetime)&#xA;  FROM [SSISDB].[catalog].[executions]&#xA;  where package_name = ?&#xA;"
               SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
               <SQLTask:ResultBinding
                 SQLTask:ResultName="0"
@@ -1001,10 +1018,18 @@ FROM     stage.Invoice</property>
         <DTS:PrecedenceConstraint
           DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS.PrecedenceConstraints[Constraint]"
           DTS:CreationName=""
-          DTS:DTSID="{14EFA638-7494-41D2-9BCC-CB0CA4F4DB37}"
+          DTS:DTSID="{A439E312-0632-48BC-B15D-5C5ECA9DDCDE}"
           DTS:From="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Get Previous Package Execution End Time"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint"
+          DTS:To="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Drop Temp Table If Exists" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{B9B08DBE-07E7-4F23-8EF1-E5BE87ECAA16}"
+          DTS:From="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Drop Temp Table If Exists"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
           DTS:To="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Establish LSN Range and Populate Temp Table" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
@@ -1082,7 +1107,7 @@ FROM     stage.Invoice</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="348.8,41.6"
           Id="Package\SEQ - Load MDS NEB Model\TSQL - Populate MDS Model from Staging - Target Entity"
@@ -1091,9 +1116,9 @@ FROM     stage.Invoice</property>
           HeaderHeight="43.2"
           IsExpanded="False"
           PanelSize="360,102.4"
-          Size="360,43.2"
+          Size="235.2,43.2"
           Id="Package\SEQ - Load MDS NEB Model"
-          TopLeft="17.5,211.9" />
+          TopLeft="61.5,211.9" />
         <NodeLayout
           Size="296,41.6"
           Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity"
@@ -1128,13 +1153,17 @@ FROM     stage.Invoice</property>
           HeaderHeight="43.2"
           IsExpanded="False"
           PanelSize="316,210.4"
-          Size="316,43.2"
+          Size="253.6,43.2"
           Id="Package\SEQ - Load MDS Staging Tables"
-          TopLeft="39.5,108.7" />
+          TopLeft="52.3,108.7" />
+        <NodeLayout
+          Size="192.8,41.6"
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Drop Temp Table If Exists"
+          TopLeft="77.1,107.1" />
         <NodeLayout
           Size="336,41.6"
           Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Establish LSN Range and Populate Temp Table"
-          TopLeft="16.7,107.1" />
+          TopLeft="5.50000000000003,208.7" />
         <NodeLayout
           Size="313.6,41.6"
           Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS\TSQL - Get Previous Package Execution End Time"
@@ -1145,26 +1174,36 @@ FROM     stage.Invoice</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="11.2,60"
+              EndConnector="0,60"
               Start="0,0"
-              End="11.2,52.5">
+              End="0,52.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,26" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,26"
-                    Point2="0,30"
-                    Point3="4,30" />
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS.PrecedenceConstraints[Constraint 1]"
+          TopLeft="173.5,148.7">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
                   <mssgle:LineSegment
-                    End="7.19999999999999,30" />
-                  <mssgle:CubicBezierSegment
-                    Point1="7.19999999999999,30"
-                    Point2="11.2,30"
-                    Point3="11.2,34" />
-                  <mssgle:LineSegment
-                    End="11.2,52.5" />
+                    End="0,52.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1176,10 +1215,10 @@ FROM     stage.Invoice</property>
         <ContainerLayout
           HeaderHeight="43.2"
           IsExpanded="False"
-          PanelSize="384,204"
-          Size="384,43.2"
+          PanelSize="347.2,305.6"
+          Size="347.2,43.2"
           Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS"
-          TopLeft="5.5,5.50000000000002" />
+          TopLeft="5.5,5.50000000000003" />
         <NodeLayout
           Size="232,41.6"
           Id="Package\SEQ - Validate MDS NEB Model\TSQL - Validate MDS NEB Model"
@@ -1190,21 +1229,21 @@ FROM     stage.Invoice</property>
           PanelSize="250.4,102.4"
           Size="250.4,43.2"
           Id="Package\SEQ - Validate MDS NEB Model"
-          TopLeft="72.3000000000001,315.1" />
+          TopLeft="53.9,315.1" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="197.5,48.7">
+          TopLeft="179.1,48.7">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60.0000000000001"
+              EndConnector="0,60"
               Start="0,0"
-              End="0,52.5000000000001">
+              End="0,52.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5000000000001" />
+                    End="0,52.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1215,7 +1254,7 @@ FROM     stage.Invoice</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="197.5,151.9">
+          TopLeft="179.1,151.9">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1237,7 +1276,7 @@ FROM     stage.Invoice</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="197.5,255.1">
+          TopLeft="179.1,255.1">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1264,7 +1303,7 @@ FROM     stage.Invoice</property>
     design-time-name="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="152,41.6"
           Id="Package\SEQ - Load MDS Staging Tables\DFLT - Populate MDS Staging - Product Entity\OLE DB Source"
@@ -1296,7 +1335,9 @@ FROM     stage.Invoice</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -1318,7 +1359,9 @@ FROM     stage.Invoice</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
