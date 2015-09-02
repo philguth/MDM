@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Load SFDC Customer to MDS Customer"
   DTS:PackageType="5"
-  DTS:VersionBuild="177"
-  DTS:VersionGUID="{A70AFD0F-96ED-4A3C-84BD-D5158FCA4220}">
+  DTS:VersionBuild="178"
+  DTS:VersionGUID="{7497EF3C-0F32-4FB0-822F-95571AFD5C93}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -48,16 +48,6 @@
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[mds1.Cornerstone Staging]"
-      DTS:CreationName="OLEDB"
-      DTS:DTSID="{D88B7B27-56F7-4C59-A65D-5B10E944E684}"
-      DTS:ObjectName="mds1.Cornerstone Staging">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=mds1;Initial Catalog=Cornerstone Staging;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[SSISDB]"
       DTS:CreationName="OLEDB"
       DTS:DTSID="{E69849DB-AC6E-4203-9B62-157A9BD95B91}"
@@ -78,7 +68,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="BatchTag">
       <DTS:VariableValue
-        DTS:DataType="8">Load SFDC Customer to MDS Customer - 8/17/2015 3:29:16 PM</DTS:VariableValue>
+        DTS:DataType="8">Load SFDC Customer to MDS Customer - 9/2/2015 10:00:35 AM</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -1960,7 +1950,9 @@ FROM     stage.Invoice</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <ContainerLayout

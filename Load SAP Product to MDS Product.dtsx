@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Load SAP Product to MDS Product"
   DTS:PackageType="5"
-  DTS:VersionBuild="230"
-  DTS:VersionGUID="{81787707-C015-4734-A2E5-74F98314204B}">
+  DTS:VersionBuild="231"
+  DTS:VersionGUID="{C191CEFA-9EAD-438A-9BB4-F7BBEB50F216}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -68,7 +68,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="BatchTag">
       <DTS:VariableValue
-        DTS:DataType="8">Load SAP Product to MDS Product - 9/1/2015 8:42:32 AM</DTS:VariableValue>
+        DTS:DataType="8">Load SAP Product to MDS Product - 9/2/2015 8:35:41 AM</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -1107,7 +1107,7 @@ FROM     stage.Invoice</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="348.8,41.6"
           Id="Package\SEQ - Load MDS NEB Model\TSQL - Populate MDS Model from Staging - Target Entity"
@@ -1146,7 +1146,9 @@ FROM     stage.Invoice</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <ContainerLayout
@@ -1216,7 +1218,7 @@ FROM     stage.Invoice</property>
           HeaderHeight="43.2"
           IsExpanded="False"
           PanelSize="347.2,305.6"
-          Size="347.2,43.2"
+          Size="384,43.2"
           Id="Package\SEQ - Select and Prepare CDC Data Set for Loading to MDS"
           TopLeft="5.5,5.50000000000003" />
         <NodeLayout
@@ -1232,18 +1234,30 @@ FROM     stage.Invoice</property>
           TopLeft="53.9,315.1" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="179.1,48.7">
+          TopLeft="197.5,48.7">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="-18.4,60"
               Start="0,0"
-              End="0,52.5">
+              End="-18.4,52.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="-4,30" />
+                  <mssgle:LineSegment
+                    End="-14.4,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-14.4,30"
+                    Point2="-18.4,30"
+                    Point3="-18.4,34" />
+                  <mssgle:LineSegment
+                    End="-18.4,52.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
